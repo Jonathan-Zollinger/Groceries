@@ -35,6 +35,7 @@ public class WalmartGroceryCrawl
         {
             System.out.printf("can't pull html from %s",targetSite);
         }
+
         //save html source code to text file
         PrintWriter writer = null;
         try
@@ -49,6 +50,11 @@ public class WalmartGroceryCrawl
         {
             System.out.print(htmlFile + " not written");
         }
+//      the html we're looking for (the "" found within the "ProductsPage__right___2Z56X" or "id="mainSearchContent""
+//      is found not found in the source html. closest I've found is finding "styles__scrollableBody___1dEFw" within
+//      the second i5 link soon after the <body> tag
+
+
 
         //close the driver
         driver.quit();
