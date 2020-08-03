@@ -25,33 +25,6 @@ public class WalmartGroceryCrawl
         //open the website that is specified as the targetSite
         driver.get(targetSite);
 
-        //define html text filename
-        String htmlFile = targetSite.substring(targetSite.indexOf("www")+4,targetSite.indexOf(".com")) + "_html.txt";
-
-        //pull html, store to string
-        String html = null;
-        try
-        {
-            html = Jsoup.connect(driver.getCurrentUrl()).get().html();
-        }catch(Exception e)
-        {
-            System.out.printf("can't pull html from %s",targetSite);
-        }
-
-        //save html source code to text file
-        PrintWriter writer = null;
-        try
-        {
-            writer = new PrintWriter(htmlFile);
-            writer.print(html);
-            writer.flush();
-            writer.close();
-            System.out.printf("%s successfully written",htmlFile);
-
-        }catch (Exception e)
-        {
-            System.out.printf("%s not written",htmlFile);
-        }
 
 //      comments are older as you scroll down. separate comments with white space
 
