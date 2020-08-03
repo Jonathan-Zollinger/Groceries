@@ -1,8 +1,10 @@
 package crawls;
 import org.jsoup.Jsoup;
+import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import java.io.PrintWriter;
 //import org.selenium.By;
@@ -44,20 +46,30 @@ public class WalmartGroceryCrawl
             writer.print(html);
             writer.flush();
             writer.close();
-            System.out.println(htmlFile + " successfully written");
+            System.out.printf("%s successfully written",htmlFile);
 
         }catch (Exception e)
         {
-            System.out.print(htmlFile + " not written");
+            System.out.printf("%s not written",htmlFile);
         }
-//      the html we're looking for (the "" found within the "ProductsPage__right___2Z56X" or "id="mainSearchContent""
+
+//      comments are older as you scroll down. separate comments with white space
+
+
+//      it seems the content we're looking for is under  a shoppingContent id, as you can see that in the bottom
+//      of the dev tools'
+
+//      the html we're looking for (the "ProductsTile" found within the "ProductsPage__right___2Z56X" or "id="mainSearchContent""
 //      is found not found in the source html. closest I've found is finding "styles__scrollableBody___1dEFw" within
-//      the second i5 link soon after the <body> tag
+//      the second i5 link soon after the <body> tag. we want this in order to automate the selection process.
 
+        WebElement price = driver.findElement(By.cssSelector("#item-13893729 > div > div.productTile__productTileDetails___25AJd > a > span"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(price);
+        actions.click(price);
 
-
-        //close the driver
-        driver.quit();
+         //close the driver
+//        driver.quit();
 
     }
 }
