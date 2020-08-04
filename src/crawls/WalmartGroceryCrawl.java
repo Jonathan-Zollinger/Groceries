@@ -1,11 +1,11 @@
 package crawls;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.safari.SafariDriver;
 
 import java.io.PrintWriter;
 
@@ -27,11 +27,24 @@ public class WalmartGroceryCrawl
 
 
         String testHTML = driver.getPageSource();
-        Document jSoupDoc = Jsoup.parse(testHTML);
-
         String testHTMLFileName = "testHTML.txt";
-        PrintWriter writer = null;
 
+        //beautify the html with bing
+        WebDriver driver2 = new FirefoxDriver();
+
+        WebElement beautifier = driver2.findElement(By.id("source"));
+        WebElement formatButton = driver2.findElement(By.id("format"));
+
+        beautifier.click();
+        beautifier.sendKeys(testHTML);
+        formatButton.click();
+        beautifier.
+
+
+
+
+        //save html to a file
+        PrintWriter writer = null;
         try
         {
             writer = new PrintWriter(testHTMLFileName);
