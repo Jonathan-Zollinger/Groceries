@@ -1,13 +1,13 @@
 package crawls;
+
 import org.jsoup.Jsoup;
-import org.openqa.selenium.By;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.jsoup.nodes.Document;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 
 import java.io.PrintWriter;
-//import org.selenium.By;
 
 public class WalmartGroceryCrawl
 {
@@ -26,23 +26,25 @@ public class WalmartGroceryCrawl
         driver.get(targetSite);
 
 
-//      comments are older as you scroll down. separate comments with white space
+        String testHTML = driver.getPageSource();
+        Document jSoupDoc = Jsoup.parse(testHTML);
 
+        String testHTMLFileName = "testHTML.txt";
+        PrintWriter writer = null;
 
-//      it seems the content we're looking for is under  a shoppingContent id, as you can see that in the bottom
-//      of the dev tools'
+        try
+        {
+            writer = new PrintWriter(testHTMLFileName);
+            writer.print(testHTML);
+            writer.flush();
+            writer.close();
+            System.out.printf("%s successfully saved to file",testHTMLFileName);
 
-//      the html we're looking for (the "ProductsTile" found within the "ProductsPage__right___2Z56X" or "id="mainSearchContent""
-//      is found not found in the source html. closest I've found is finding "styles__scrollableBody___1dEFw" within
-//      the second i5 link soon after the <body> tag. we want this in order to automate the selection process.
+        }catch (Exception e) {
+        }
 
-        WebElement price = driver.findElement(By.cssSelector("#item-13893729 > div > div.productTile__productTileDetails___25AJd > a > span"));
-        Actions actions = new Actions(driver);
-        actions.moveToElement(price);
-        actions.click(price);
-
-         //close the driver
-//        driver.quit();
+        //close the driver
+        driver.quit();
 
     }
 }
