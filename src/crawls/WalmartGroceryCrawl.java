@@ -1,18 +1,22 @@
 package crawls;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class WalmartGroceryCrawl
 {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args){
         //define variables
         String targetSite = "https:/www.walmart.com/grocery/products?aisle=1255027787131_4364938242&&page=1";
 
@@ -31,8 +35,6 @@ public class WalmartGroceryCrawl
 
         //close the driver
         driver.quit();
-
-        testHTML = beautifyHTML(testHTML);
 
         //save html to a file
         PrintWriter writer = null;
@@ -109,4 +111,14 @@ public class WalmartGroceryCrawl
         System.out.println("successfully beautified HTML");
         return beautHTML;
     }//end public static String beautify(String input)
+
+    public static ArrayList<String> prodPrice(String filelocation,String baseURL) throws IOException {
+        ArrayList<String> prodPrice = null;
+        File input = new File(filelocation);
+
+        Document doc = Jsoup.parse(input, "UTF-8", baseURL);
+        //for(Element i:
+
+        return prodPrice;
+    }//end public static ArrayList<String> prodPrice(String filelocation)
 }
