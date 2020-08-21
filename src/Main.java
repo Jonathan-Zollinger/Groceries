@@ -3,12 +3,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-class testing {
+public class Main {
     public static void main(String[] args) {
         String fileLocation = "testHTML.txt";
         String baseURL = "https://walmart.com/grocery";
@@ -41,7 +40,7 @@ class testing {
         } catch (IOException e) {
             System.out.println("parse failed");
         }
- //       System.out.print(doc);
+        //       System.out.print(doc);
 
 
         //for(Element i:
