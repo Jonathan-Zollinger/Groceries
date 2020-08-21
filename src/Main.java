@@ -1,3 +1,5 @@
+import com.zollylobby.Zollinger;
+import com.zollylobby.ZollingerSelenium;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,9 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        String fileLocation = "testHTML.txt";
-        String baseURL = "https://walmart.com/grocery";
-        ArrayList<Array> prodPrice = null;
+        ZollingerSelenium.getHeadlessDriverWithSpecDownload()
 
         //these are the CSS selectors. walmart specify these under data-automation-id tags
         String cssProdContainer = "div.productTile__productTileWrapper___G0H8Q";
