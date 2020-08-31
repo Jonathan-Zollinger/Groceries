@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -43,20 +44,7 @@ public class Main {
         //navigate to walmart.com/grocery
         driver.get(url);
 
-        //if the "new to walmart" onboarding prompt come up, close it. loop through 5x to give the browser enough time.
-        int count = 5;
-        while(count > 0) {
-            try {
-                driver.findElement(By.className("OnboardingModal__closeBtn___2xhJM")).click();
-                System.out.printf("driver closed onboarding prompt%n");
-                break;
-            } catch (Exception e) {
-                System.out.printf("driver failed to click onboarding prompt, or onboarding prompt not present%n" +
-                        "will try %d more times",count);
-                count --;
-                try{TimeUnit.SECONDS.sleep(1);}catch (Exception d){System.out.print("sleep failed");}
-            }
-        }
+        closeWalmartOnboardingPrompt(driver);
 
         //change the store selection
         driver.findElement(By.cssSelector(".button-link")).click();
@@ -66,30 +54,29 @@ public class Main {
         xPath = "/html/body/div[1]/div[2]/div[1]/section[2]/div/div[1]/div/div[1]/div/form/div/input";
         driver.findElement(By.xpath(xPath)).clear();
         driver.findElement(By.xpath(xPath)).sendKeys(storeZip);
-        //click search
-        cssSelector = ".LocationFlyout__searchBtn___2m4qm";
-        driver.findElement(
-                By.cssSelector(cssSelector))
-                .click();
-        //select first radio button
-        cssSelector = "Label.RadioTile__tileContent___1bBd4";
-        xPath = "/html/body/div[1]/div[2]/div[1]/section[2]/div/div[1]/" +
-                "div/div[1]/div/ul/li[1]/label/div/div/div[1]/div[1]";
-        driver.findElement(
-                By.cssSelector(cssSelector))
-                .click();
-        //select "continue" button
-        cssSelector = ".LocationFlyout__footer___2d62o";
-        driver.findElement(
-                By.cssSelector(cssSelector))
-                .click();
-        //click the "I really wanna continue" button
-        cssSelector = ".LocationFlyout__flyoutContainer___GSXOF > button:nth-child(2)";
-        driver.findElement(
-                By.cssSelector(cssSelector))
-                .click();
 
+        //cycle through clicks as commented below
+        ArrayList<String> selectors = new ArrayList<>();
+        selectors.addAll(Arrays.asList(
+                //click search
+                ".LocationFlyout__searchBtn___2m4qm",
+                //click first radio button
+                "Label.RadioTile__tileContent___1bBd4",
+                //select "continue" button
+                ".LocationFlyout__footer___2d62o",
+                //click the "I really wanna continue" button
+                ".LocationFlyout__flyoutContainer___GSXOF > button:nth-child(2)")
+        );
 
+        for(int i = 0; i < selectors.size(); i++){
+            driver.findElement(
+                    By.cssSelector(selectors.get(i)))
+                    .click();
+        }//end for(int i = 0; i < selectors.size(); i++)
+
+        closeWalmartOnboardingPrompt(driver);
+
+//        driver.close();
         System.out.printf("driver has finished processing script. user can manipulate browser window%n");
     }
 
@@ -125,4 +112,21 @@ public class Main {
         return new FirefoxDriver(options); //call the driver w/ our specified options (and profile).
 
     }//end public static WebDriver getHeadlessDriverWithSpecDownload(String downloadFilepath, String mimeType)
+    public static void closeWalmartOnboardingPrompt(WebDriver driver){
+        //if the "new to walmart" onboarding prompt come up, close it. loop through 5x to give the browser enough time.
+        int count = 5;
+        while(count > 0) {
+            try {
+                driver.findElement(By.className("OnboardingModal__closeBtn___2xhJM")).click();
+                System.out.printf("driver closed onboarding prompt%n");
+                break;
+            } catch (Exception e) {
+                System.out.printf("driver failed to click onboarding prompt, or onboarding prompt not present%n" +
+                        "will try %d more times",count);
+                count --;
+                try{TimeUnit.SECONDS.sleep(1);}catch (Exception d){System.out.print("sleep failed");}
+            }//end catch (Exception e)
+        }//end int count = 5; while(count > 0)
+
+    }//end public static void closeWalmartOnboardingPrompt(WebDriver driver)
 }
