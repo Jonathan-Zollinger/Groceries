@@ -15,6 +15,10 @@ public class Main {
         //define variables
 
         //because this program will either run on linux of windows, I don't need to plan for anything unix based.
+        String cssSelector = null;
+        String xPath = null;
+        String url = null;
+
         Boolean isWindows = false;
         if (System.getProperty("os.name").startsWith("Windows")){
             isWindows = true;
@@ -27,12 +31,11 @@ public class Main {
             storageDirectory = "C:\\Scripts\\Price_Tracker";
             driverFile = "geckodriver-v0.27.0-win64.exe";
         }else{//is linux
-            storageDirectory = "Price_Tracker";
+            storageDirectory = "/Price_Tracker";
             driverFile = "geckodriver-v0.27.0-linux64";
         }
 
-        String url = "https://www.walmart.com/grocery";
-        String cssSlctr = null;
+        url = "https://www.walmart.com/grocery";
 
         //start driver
         WebDriver driver = getHeadlessDriverWithSpecDownload(driverFile,storageDirectory,null);
@@ -57,26 +60,46 @@ public class Main {
 
         //change the store selection
         driver.findElement(By.cssSelector(".button-link")).click();
-        String storeZip = "84014";
+        String storeZip = "84010";
 
         //enter zip code
-        String xpath = "/html/body/div[1]/div[2]/div[1]/section[2]/div/div[1]/div/div[1]/div/form/div/input";
-        driver.findElement(By.xpath(xpath)).clear();
-        driver.findElement(By.xpath(xpath)).sendKeys(storeZip);
+        xPath = "/html/body/div[1]/div[2]/div[1]/section[2]/div/div[1]/div/div[1]/div/form/div/input";
+        driver.findElement(By.xpath(xPath)).clear();
+        driver.findElement(By.xpath(xPath)).sendKeys(storeZip);
         //click search
-        driver.findElement(By.cssSelector(".LocationFlyout__searchBtn___2m4qm")).click();
+        cssSelector = ".LocationFlyout__searchBtn___2m4qm";
+        driver.findElement(
+                By.cssSelector(cssSelector))
+                .click();
+        //select first radio button
+        cssSelector = "Label.RadioTile__tileContent___1bBd4";
+        xPath = "/html/body/div[1]/div[2]/div[1]/section[2]/div/div[1]/" +
+                "div/div[1]/div/ul/li[1]/label/div/div/div[1]/div[1]";
+        driver.findElement(
+                By.cssSelector(cssSelector))
+                .click();
+        //select "continue" button
+        cssSelector = ".LocationFlyout__footer___2d62o";
+        driver.findElement(
+                By.cssSelector(cssSelector))
+                .click();
+        //click the "I really wanna continue" button
+        cssSelector = ".LocationFlyout__flyoutContainer___GSXOF > button:nth-child(2)";
+        driver.findElement(
+                By.cssSelector(cssSelector))
+                .click();
 
 
+        System.out.printf("driver has finished processing script. user can manipulate browser window%n");
     }
 
     public static WebDriver getHeadlessDriverWithSpecDownload(
-            String DriverPath, String downloadFilepath,String mimeType) {
+            String driverPath, String downloadFilepath,String mimeType) {
 
         if (mimeType == null){
             mimeType = "application/x-gzip";
         }
-        String driverFile = DriverPath;
-        System.setProperty("webdriver.gecko.driver", driverFile);
+        System.setProperty("webdriver.gecko.driver", driverPath);
         FirefoxProfile profile = new FirefoxProfile();
 
         //set Firefox profile preferences
