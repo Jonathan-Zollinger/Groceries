@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+public class Walmart {
     public static void main(String[] args) {
         //define variables
 
@@ -69,13 +69,31 @@ public class Main {
         );
 
         for(int i = 0; i < selectors.size(); i++){
-            driver.findElement(
-                    By.cssSelector(selectors.get(i)))
-                    .click();
+            /*because the webpage may respond slower than our program, loop through a
+                couple times if the driver action fails */
+            int count = 2;
+            while(count > 0) {
+                try {
+                    driver.findElement(
+                            By.cssSelector(selectors.get(i)))
+                            .click();
+                    break;
+                } catch (Exception e) {
+                    System.out.printf("driver failed to click selector \"%s\" %n" +
+                            "will try %d more times%n",selectors.get(i),count);
+                    count --;
+                    //wait 1/2 second till looping through
+                    try{TimeUnit.MILLISECONDS.sleep(500);}catch (Exception d){System.out.print("sleep failed");}
+                }//end catch (Exception e)
+            }//end int count = 5; while(count > 0)
         }//end for(int i = 0; i < selectors.size(); i++)
 
         closeWalmartOnboardingPrompt(driver);
-
+        //cycle through clicks as commented below
+//        selectors.clear(); //cleans out arraylist
+//        selectors.addAll(Arrays.asList(
+//                "#mobileNavigationBtn",
+//                ""));
 //        driver.close();
         System.out.printf("driver has finished processing script. user can manipulate browser window%n");
     }
@@ -122,7 +140,7 @@ public class Main {
                 break;
             } catch (Exception e) {
                 System.out.printf("driver failed to click onboarding prompt, or onboarding prompt not present%n" +
-                        "will try %d more times",count);
+                        "will try %d more times%n",count);
                 count --;
                 try{TimeUnit.SECONDS.sleep(1);}catch (Exception d){System.out.print("sleep failed");}
             }//end catch (Exception e)
