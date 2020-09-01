@@ -14,9 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class Walmart {
     public static void main(String[] args) {
         //define variables
-
-        //because this program will either run on linux of windows, I don't need to plan for anything unix based.
-        String cssSelector = null;
+            //because this program will either run on linux of windows, I don't need to plan for anything unix based.
         String xPath = null;
         String url = null;
 
@@ -36,64 +34,16 @@ public class Walmart {
             driverFile = "geckodriver-v0.27.0-linux64";
         }
 
-        url = "https://www.walmart.com/grocery";
-
         //start driver
         WebDriver driver = getHeadlessDriverWithSpecDownload(driverFile,storageDirectory,null);
 
-        //navigate to walmart.com/grocery
-        driver.get(url);
-
-        closeWalmartOnboardingPrompt(driver);
-
-        //change the store selection
-        driver.findElement(By.cssSelector(".button-link")).click();
-        String storeZip = "84010";
-
-        //enter zip code
-        xPath = "/html/body/div[1]/div[2]/div[1]/section[2]/div/div[1]/div/div[1]/div/form/div/input";
-        driver.findElement(By.xpath(xPath)).clear();
-        driver.findElement(By.xpath(xPath)).sendKeys(storeZip);
 
         //cycle through clicks as commented below
-        ArrayList<String> selectors = new ArrayList<>();
+        selectors.clear(); //cleans out arraylist
         selectors.addAll(Arrays.asList(
-                //click search
-                ".LocationFlyout__searchBtn___2m4qm",
-                //click first radio button
-                "Label.RadioTile__tileContent___1bBd4",
-                //select "continue" button
-                ".LocationFlyout__footer___2d62o",
-                //click the "I really wanna continue" button
-                ".LocationFlyout__flyoutContainer___GSXOF > button:nth-child(2)")
-        );
-
-        for(int i = 0; i < selectors.size(); i++){
-            /*because the webpage may respond slower than our program, loop through a
-                couple times if the driver action fails */
-            int count = 2;
-            while(count > 0) {
-                try {
-                    driver.findElement(
-                            By.cssSelector(selectors.get(i)))
-                            .click();
-                    break;
-                } catch (Exception e) {
-                    System.out.printf("driver failed to click selector \"%s\" %n" +
-                            "will try %d more times%n",selectors.get(i),count);
-                    count --;
-                    //wait 1/2 second till looping through
-                    try{TimeUnit.MILLISECONDS.sleep(500);}catch (Exception d){System.out.print("sleep failed");}
-                }//end catch (Exception e)
-            }//end int count = 5; while(count > 0)
-        }//end for(int i = 0; i < selectors.size(); i++)
-
-        closeWalmartOnboardingPrompt(driver);
-        //cycle through clicks as commented below
-//        selectors.clear(); //cleans out arraylist
-//        selectors.addAll(Arrays.asList(
-//                "#mobileNavigationBtn",
-//                ""));
+                "#mobileNavigationBtn",
+                "li.NavigationPanel__department___1DF7d:nth-child(4) > button:nth-child(1) > div:nth-child(1)"));
+        clickThroughCssArrayList(driver,selectors);
 //        driver.close();
         System.out.printf("driver has finished processing script. user can manipulate browser window%n");
     }
@@ -130,6 +80,7 @@ public class Walmart {
         return new FirefoxDriver(options); //call the driver w/ our specified options (and profile).
 
     }//end public static WebDriver getHeadlessDriverWithSpecDownload(String downloadFilepath, String mimeType)
+
     public static void closeWalmartOnboardingPrompt(WebDriver driver){
         //if the "new to walmart" onboarding prompt come up, close it. loop through 5x to give the browser enough time.
         int count = 5;
@@ -139,12 +90,70 @@ public class Walmart {
                 System.out.printf("driver closed onboarding prompt%n");
                 break;
             } catch (Exception e) {
-                System.out.printf("driver failed to click onboarding prompt, or onboarding prompt not present%n" +
-                        "will try %d more times%n",count);
+                System.out.printf("driver failed to click onboarding prompt, or onboarding prompt not present. " +
+                        "will try %dx more%n",count-1);
                 count --;
                 try{TimeUnit.SECONDS.sleep(1);}catch (Exception d){System.out.print("sleep failed");}
             }//end catch (Exception e)
         }//end int count = 5; while(count > 0)
 
     }//end public static void closeWalmartOnboardingPrompt(WebDriver driver)
+
+    public static void clickThroughCssArrayList(WebDriver driver, ArrayList<String> selectors){
+        for(int i = 0; i < selectors.size(); i++){
+            /*because the webpage may respond slower than our program, loop through a
+                couple times if the driver action fails */
+            int count = 2;
+            while(count > 0) {
+                try {
+                    driver.findElement(
+                            By.cssSelector(selectors.get(i)))
+                            .click();
+                    System.out.printf("driver clicked \"%s\"%n",selectors.get(i));
+                    break;
+                } catch (Exception e) {
+                    System.out.printf("driver failed to click selector \"%s\", " +
+                            "will try %dx more%n",selectors.get(i),count-1);
+                    count --;
+                    //wait 1/2 second till looping through
+                    try{TimeUnit.MILLISECONDS.sleep(500);}catch (Exception d){System.out.print("sleep failed");}
+                }//end catch (Exception e)
+            }//end int count = 5; while(count > 0)
+        }//end for(int i = 0; i < selectors.size(); i++)
+    }//end public static void clickThroughCssArrayList(WebDriver driver, ArrayList<String> list)
+
+    public static void changeWalmartStore(WebDriver driver, String zipCode) {
+        //define variables
+        String url = "https://www.walmart.com/grocery";
+
+        driver.get(url);
+
+        closeWalmartOnboardingPrompt(driver);
+
+        //click "change store"
+        driver.findElement(By.cssSelector(".button-link")).click();
+
+        //enter zip code
+        String xPath = "/html/body/div[1]/div[2]/div[1]/section[2]/div/div[1]/div/div[1]/div/form/div/input";
+        driver.findElement(By.xpath(xPath)).clear();
+        driver.findElement(By.xpath(xPath)).sendKeys(zipCode);
+
+        //cycle through clicks as commented below
+        ArrayList<String> selectors = new ArrayList<>();
+        selectors.addAll(Arrays.asList(
+                //click search
+                ".LocationFlyout__searchBtn___2m4qm",
+                //click first radio button
+                "Label.RadioTile__tileContent___1bBd4",
+                //select "continue" button
+                ".LocationFlyout__footer___2d62o",
+                //click the "I really wanna continue" button
+                ".LocationFlyout__flyoutContainer___GSXOF > button:nth-child(2)")
+        );//end selectors.addAll()
+
+        clickThroughCssArrayList(driver, selectors);
+
+        closeWalmartOnboardingPrompt(driver);
+
+    }
 }
