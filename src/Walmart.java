@@ -48,7 +48,7 @@ public class Walmart {
         selectors.clear(); //cleans out arraylist
         selectors.addAll(Arrays.asList(
                 "#mobileNavigationBtn",
-                "li.NavigationPanel__department___1DF7d:nth-child(4) > button:nth-child(1) > div:nth-child(1)"));
+                "button[aria-label=\"Fruits & Vegetables\"]"));
         clickThroughCssArrayList(driver,selectors);
 
         driver.findElement(By.linkText("Shop All Fruits & Vegetables")).click();
@@ -62,7 +62,7 @@ public class Walmart {
 
 //        driver.close();
         System.out.printf("driver has finished processing script. user can manipulate browser window%n");
-    }
+    }// end public static void main(String[] args)
 
     public static WebDriver getHeadlessDriverWithSpecDownload(
             String driverPath, String downloadFilepath,String mimeType) {
