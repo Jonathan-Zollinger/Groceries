@@ -4,7 +4,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -89,19 +88,23 @@ public class Walmart {
         //define the selection
         final By onboardBtn = By.className("OnboardingModal__closeBtn___2xhJM");
 
+        waitAndClick(driver, onboardBtn, "onboarding button");
+
+    }//end public static void closeWalmartOnboardingPrompt(WebDriver driver)
+
+    public static void waitAndClick(WebDriver driver, By clicker, String actionName){
         try {
-            //wait till we can click the exit onboard button
+            //wait for the element to be clickable
             new WebDriverWait(driver, 4)
                     .until(ExpectedConditions
-                            .elementToBeClickable(onboardBtn));
-
-            //click the exit button
-            driver.findElement(onboardBtn).click();
-            System.out.printf("driver closed onbaording banner.%n");
+                            .elementToBeClickable(clicker));
+            //now click the element
+            driver.findElement(clicker).click();
+            System.out.printf("driver clicked the %s%n",actionName);
         }catch (Exception e){
-            System.out.printf("driver failed to close the onboarding banner. will attempt to continue%n");
-        }
-    }//end public static void closeWalmartOnboardingPrompt(WebDriver driver)
+            System.out.printf("driver failed to click the %s%n",actionName);
+        }//end try/catch for WebDriverWait->clicker to be clickable
+    }
 
     public static void clickThroughLinkText(WebDriver driver, ArrayList<String> selectors){
         for(int i = 0; i < selectors.size(); i++){

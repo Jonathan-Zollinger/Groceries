@@ -27,10 +27,6 @@ public class stores {
         driver.get(url);
         Walmart.closeWalmartOnboardingPrompt(driver);
 
-//        ArrayList<String> selectors = new ArrayList<>();
-//        selectors.clear(); //cleans out arraylist
-//        selectors.addAll(Arrays.asList("#mobileNavigationBtn",
-//        "button.NavigationPanel__item___pzwlC"));
         int count = 5;
         while(count > 0) {
             try {
