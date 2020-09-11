@@ -9,8 +9,8 @@ public class stores {
 
     public static void main(String[] args) {
         String url = "https://www.walmart.com/grocery";
-        String cssSelector = null;
-        String xPath = null;
+        String cssSelector;
+        String xPath;
 
         Boolean isWindows = false;
         if (System.getProperty("os.name").startsWith("Windows")){
@@ -18,16 +18,10 @@ public class stores {
         }//end if (System.getProperty("os.name")
 
         //specify folder and driver locations
-        String driverFile = null;
-        String storageDirectory = null;
-        if (isWindows){
-            storageDirectory = "C:\\Scripts\\Price_Tracker";
-            driverFile = "geckodriver-v0.27.0-win64.exe";
-        }else{//is linux
-            storageDirectory = "/Price_Tracker";
-            driverFile = "geckodriver-v0.27.0-linux64";
-        }//end if (isWindows)
+        String driverFile = constants.driverFile;
+        String storageDirectory = constants.storageDirectory;
 
+        //intialize a headless driver w/ a specified download directory
         WebDriver driver = Walmart.getHeadlessDriverSpecifyDownloadDirectory(driverFile,storageDirectory,null);
 
         driver.get(url);
