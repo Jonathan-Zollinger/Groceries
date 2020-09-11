@@ -28,7 +28,7 @@ public class stores {
             driverFile = "geckodriver-v0.27.0-linux64";
         }//end if (isWindows)
 
-        WebDriver driver = Walmart.getHeadlessDriverWithSpecDownload(driverFile,storageDirectory,null);
+        WebDriver driver = Walmart.getHeadlessDriverSpecifyDownloadDirectory(driverFile,storageDirectory,null);
 
         driver.get(url);
         Walmart.closeWalmartOnboardingPrompt(driver);

@@ -22,33 +22,21 @@ public class Walmart {
         String xpath = null;
         ArrayList<String> selectors = new ArrayList<>();
 
-        Boolean isWindows = false;
-        if (System.getProperty("os.name").startsWith("Windows")){
-            isWindows = true;
-        }//end if (System.getProperty("os.name")
 
-        //specify folder and driver locations
-        String driverFile = null;
-        String storageDirectory = null;
-        if (isWindows){
-            storageDirectory = "C:\\Scripts\\Price_Tracker";
-            driverFile = "geckodriver-v0.27.0-win64.exe";
-        }else{//is linux
-            storageDirectory = "/Price_Tracker";
-            driverFile = "geckodriver-v0.27.0-linux64";
-        }
+        String storageDirectory =  constants.storageDirectory;
+        String driverFile = constants.driverFile;
 
         //start driver
-        WebDriver driver = getHeadlessDriverWithSpecDownload(driverFile,storageDirectory,null);
+        WebDriver driver = getHeadlessDriverSpecifyDownloadDirectory(driverFile,storageDirectory,null);
 
         //change store to first store in zip code
         changeWalmartStore(driver,"20001");
 
+        WebElement deptNavBtn = driver.findElement(By.cssSelector("#mobileNavigationBtn"));
+
         //cycle through clicks as commented below
         selectors.clear(); //cleans out arraylist
-        selectors.addAll(Arrays.asList(
-                "#mobileNavigationBtn",
-                "button[aria-label=\"Fruits & Vegetables\"]"));
+        selectors.add("button[aria-label=\"Fruits & Vegetables\"]");
         clickThroughCssArrayList(driver,selectors);
 
         driver.findElement(By.linkText("Shop All Fruits & Vegetables")).click();
@@ -64,7 +52,7 @@ public class Walmart {
         System.out.printf("driver has finished processing script. user can manipulate browser window%n");
     }// end public static void main(String[] args)
 
-    public static WebDriver getHeadlessDriverWithSpecDownload(
+    public static WebDriver getHeadlessDriverSpecifyDownloadDirectory(
             String driverPath, String downloadFilepath,String mimeType) {
 
         if (mimeType == null){
@@ -95,24 +83,24 @@ public class Walmart {
         //initiate new instance of firefox
         return new FirefoxDriver(options); //call the driver w/ our specified options (and profile).
 
-    }//end public static WebDriver getHeadlessDriverWithSpecDownload(String downloadFilepath, String mimeType)
+    }//end public static WebDriver getHeadlessDriverSpecifyDownloadDirectory(String downloadFilepath, String mimeType)
 
     public static void closeWalmartOnboardingPrompt(WebDriver driver){
-        //if the "new to walmart" onboarding prompt come up, close it. loop through 5x to give the browser enough time.
-        int count = 5;
-        while(count > 0) {
-            try {
-                driver.findElement(By.className("OnboardingModal__closeBtn___2xhJM")).click();
-                System.out.printf("driver closed onboarding prompt%n");
-                break;
-            } catch (Exception e) {
-                System.out.printf("driver failed to click onboarding prompt, or onboarding prompt not present. " +
-                        "will try %dx more%n",count-1);
-                count --;
-                try{TimeUnit.SECONDS.sleep(1);}catch (Exception d){System.out.print("sleep failed");}
-            }//end catch (Exception e)
-        }//end int count = 5; while(count > 0)
+        //define the selection
+        final By onboardBtn = By.className("OnboardingModal__closeBtn___2xhJM");
 
+        try {
+            //wait till we can click the exit onboard button
+            new WebDriverWait(driver, 4)
+                    .until(ExpectedConditions
+                            .elementToBeClickable(onboardBtn));
+
+            //click the exit button
+            driver.findElement(onboardBtn).click();
+            System.out.printf("driver closed onbaording banner.%n");
+        }catch (Exception e){
+            System.out.printf("driver failed to close the onboarding banner. will attempt to continue%n");
+        }
     }//end public static void closeWalmartOnboardingPrompt(WebDriver driver)
 
     public static void clickThroughLinkText(WebDriver driver, ArrayList<String> selectors){
@@ -197,4 +185,8 @@ public class Walmart {
         closeWalmartOnboardingPrompt(driver);
 
     }
-}
+
+//    public void clickDeptBurger(Webdriver driver){
+//
+//    }
+}//end public class Walmart
