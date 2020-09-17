@@ -43,7 +43,7 @@ public class stores {
 
         driver.findElement(
                 By.cssSelector(
-                        "li.NavigationPanel__department___1DF7d:nth-child(4) > button:nth-child(1)"));
+                        "li.NavigationPanel__department___1DF7d:nth-child(4) > button:nth-child(1)");
 
 
 

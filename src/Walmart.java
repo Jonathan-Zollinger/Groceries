@@ -7,6 +7,7 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,8 @@ public class Walmart {
             //because this program will either run on linux of windows, I don't need to plan for anything unix based.
         String css = null;
         String xpath = null;
-        ArrayList<String> selectors = new ArrayList<>();
+        //arraylist dedicated to quick succession of clicks. Arrays within Arraylist are <By selector,String action>
+        ArrayList<Array> selectors = new ArrayList<>();
 
 
         String storageDirectory =  constants.storageDirectory;
@@ -28,26 +30,18 @@ public class Walmart {
         //start driver
         WebDriver driver = getHeadlessDriverSpecifyDownloadDirectory(driverFile,storageDirectory,null);
 
-        //change store to first store in zip code
+        //open walmart.com/grocery, change store to first store in zip code, close onboarding prompt
         changeWalmartStore(driver,"20001");
 
+        //this is the hamburger icon that opens the department navigation panel
         WebElement deptNavBtn = driver.findElement(By.cssSelector("#mobileNavigationBtn"));
+
+        deptNavBtn.click();
 
         //cycle through clicks as commented below
         selectors.clear(); //cleans out arraylist
-        selectors.add("button[aria-label=\"Fruits & Vegetables\"]");
-        clickThroughCssArrayList(driver,selectors);
+        By.cssSelector("button[aria-label=\"Fruits & Vegetables\"]");
 
-        driver.findElement(By.linkText("Shop All Fruits & Vegetables")).click();
-
-        System.out.printf("does the mobile navigation and dept selection still work?%n");
-        clickThroughCssArrayList(driver,selectors);
-
-//        System.out.printf("the number of objects in \"depts\" is %d%n" +
-//                "the number of objects in \"subdepts\" is %d%n",depts.size(),subdepts.size());
-
-
-//        driver.close();
         System.out.printf("driver has finished processing script. user can manipulate browser window%n");
     }// end public static void main(String[] args)
 
@@ -104,7 +98,7 @@ public class Walmart {
         }catch (Exception e){
             System.out.printf("driver failed to click the %s%n",actionName);
         }//end try/catch for WebDriverWait->clicker to be clickable
-    }
+    }//end public static void waitAndClick(WebDriver driver, By clicker, String actionName)
 
     public static void clickThroughLinkText(WebDriver driver, ArrayList<String> selectors){
         for(int i = 0; i < selectors.size(); i++){
@@ -129,28 +123,9 @@ public class Walmart {
         }//end for(int i = 0; i < selectors.size(); i++)
     }//end public static void clickThroughCssArrayList(WebDriver driver, ArrayList<String> list)
 
-    public static void clickThroughCssArrayList(WebDriver driver, ArrayList<String> selectors){
+    public static void clickThroughByList(WebDriver driver, ArrayList<Array> selectors){
         for(int i = 0; i < selectors.size(); i++){
-            /*because the webpage may respond slower than our program, loop through a
-                couple times if the driver action fails */
-            int count = 30;
-            while(count > 0) {
-                try {
-                    WebElement result = new WebDriverWait(driver, 10)
-                            .until(ExpectedConditions.elementToBeClickable(By.cssSelector(selectors.get(i))));
-                    driver.findElement(
-                            By.cssSelector(selectors.get(i)))
-                            .click();
-                    System.out.printf("driver clicked \"%s\"%n",selectors.get(i));
-                    break;
-                } catch (Exception e) {
-                    System.out.printf("driver failed to click selector \"%s\", " +
-                            "will try %dx more%n",selectors.get(i),count-1);
-                    count --;
-                    //wait 1/2 second till looping through
-                    try{TimeUnit.MILLISECONDS.sleep(500);}catch (Exception d){System.out.print("sleep failed");}
-                }//end catch (Exception e)
-            }//end int count = 5; while(count > 0)
+
         }//end for(int i = 0; i < selectors.size(); i++)
     }//end public static void clickThroughCssArrayList(WebDriver driver, ArrayList<String> list)
 
@@ -162,7 +137,7 @@ public class Walmart {
 
         closeWalmartOnboardingPrompt(driver);
 
-        //click "change store"
+        //click "change[store]"
         driver.findElement(By.cssSelector(".button-link")).click();
 
         //enter zip code
@@ -171,19 +146,18 @@ public class Walmart {
         driver.findElement(By.xpath(xPath)).sendKeys(zipCode);
 
         //cycle through clicks as commented below
-        ArrayList<String> throwAwaySelectors = new ArrayList<>();
-        throwAwaySelectors.addAll(Arrays.asList(
+        
+        selectList.addAll(Arrays.asList(
                 //click search
-                ".LocationFlyout__searchBtn___2m4qm",
+                Array
+                        .cssSelector(".LocationFlyout__searchBtn___2m4qm"),
                 //click first radio button
-                "Label.RadioTile__tileContent___1bBd4",
+                By.cssSelector("Label.RadioTile__tileContent___1bBd4"),
                 //select "continue" button
-                ".LocationFlyout__footer___2d62o",
+                By.cssSelector(".LocationFlyout__footer___2d62o"),
                 //click the "I really wanna continue" button
-                ".LocationFlyout__flyoutContainer___GSXOF > button:nth-child(2)")
-        );//end selectors.addAll()
-
-        clickThroughCssArrayList(driver, throwAwaySelectors);
+                By.cssSelector(".LocationFlyout__flyoutContainer___GSXOF > button:nth-child(2)"
+                )));//end selectors.addAll()
 
         closeWalmartOnboardingPrompt(driver);
 
