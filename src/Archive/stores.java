@@ -1,5 +1,6 @@
 package Archive;
 
+import Harvester.Tools;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -22,10 +23,10 @@ public class stores {
         String storageDirectory = constants.storageDirectory;
 
         //intialize a headless driver w/ a specified download directory
-        WebDriver driver = Walmart.getHeadlessDriverSpecifyDownloadDirectory(driverFile,storageDirectory,null);
+        WebDriver driver = Tools.getHeadlessDriverSpecifyDownloadDirectory(driverFile, storageDirectory, null);
 
         driver.get(url);
-        Walmart.closeWalmartOnboardingPrompt(driver);
+        //closeWalmartOnboardingPrompt(driver);
 
         int count = 5;
         while(count > 0) {
@@ -41,9 +42,9 @@ public class stores {
             }//end catch (Exception e)
         }//end int count = 5; while(count > 0)
 
-        driver.findElement(
-                By.cssSelector(
-                        "li.NavigationPanel__department___1DF7d:nth-child(4) > button:nth-child(1)");
+//        driver.findElement(
+//                By.cssSelector(
+//                        "li.NavigationPanel__department___1DF7d:nth-child(4) > button:nth-child(1)");
 
 
 
