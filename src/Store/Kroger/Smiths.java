@@ -1,6 +1,6 @@
-package Harvester.Kroger;
+package Store.Kroger;
 
-import Harvester.Store;
+import Store.Store;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

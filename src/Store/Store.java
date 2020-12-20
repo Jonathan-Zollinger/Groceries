@@ -1,4 +1,4 @@
-package Harvester;
+package Store;
 
 import java.lang.*;
 import java.util.Properties;

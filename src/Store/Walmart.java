@@ -1,4 +1,4 @@
-package Harvester;
+package Store;
 
 public class Walmart {
 
