@@ -11,33 +11,33 @@ public class Harvester {
     private static String driverPath;
     private static String downloadFilepath;
 
-        public static void main(String[] args) {
-            setDriverPath();
-            Smiths smiths = new Smiths(getDriver(driverPath, false));
+    public static void main(String[] args) {
+        setDriverPath();
+        Smiths smiths = new Smiths(getDriver(driverPath, false));
+        smiths.changeLocation(84010);
+    }
 
-        }
+    public static WebDriver getDriver(String driverPath,boolean isHeadless) {
 
-        public static WebDriver getDriver(String driverPath,boolean isHeadless) {
+        System.setProperty("webdriver.gecko.driver", driverPath);
+        FirefoxProfile profile = new FirefoxProfile();
 
-            System.setProperty("webdriver.gecko.driver", driverPath);
-            FirefoxProfile profile = new FirefoxProfile();
+        //set Firefox profile preferences
+        /* it seems like you could get away without changing the browser.download.folderList preference to "2",
+        but without it we can't change the browser.download.dir preference. */
+        profile.setPreference("browser.download.folderList", 2);//uses last download directory as destination
 
-            //set Firefox profile preferences
-            /* it seems like you could get away without changing the browser.download.folderList preference to "2",
-            but without it we can't change the browser.download.dir preference. */
-            profile.setPreference("browser.download.folderList", 2);//uses last download directory as destination
+        //set Firefox options
+        FirefoxOptions options = new FirefoxOptions();
+        options.setHeadless(false); //true == headless version of firefox
 
-            //set Firefox options
-            FirefoxOptions options = new FirefoxOptions();
-            options.setHeadless(false); //true == headless version of firefox
+        //include profile in options
+        options.setProfile(profile); //include all the profile settings in this option set
 
-            //include profile in options
-            options.setProfile(profile); //include all the profile settings in this option set
+        //initiate new instance of firefox
+        return new FirefoxDriver(options); //call the driver w/ our specified options (and profile).
 
-            //initiate new instance of firefox
-            return new FirefoxDriver(options); //call the driver w/ our specified options (and profile).
-
-        }//end public static WebDriver getHeadlessDriverSpecifyDownloadDirectory(String downloadFilepath, String mimeType)
+    }//end public static WebDriver getHeadlessDriverSpecifyDownloadDirectory(String downloadFilepath, String mimeType)
 
 
     public static WebDriver getDownloadingDriver(String driverPath,boolean isHeadless,String downloadFilepath,

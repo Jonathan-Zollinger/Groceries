@@ -4,11 +4,15 @@ import Store.Store;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Smiths extends Store {
     //values
     private static final String homePage = "https://www.smithsfoodanddrug.com/";
 
-    //selector Strings
+    //selectors
+    HashMap<By,String> selectors = new HashMap<>();
     private static final By changeStoreSelector =
             By.xpath("//div[@id='root']//button[@data-testid='CurrentModality-button']");
     private static final By changeStoreZipEntry =
@@ -23,7 +27,18 @@ public class Smiths extends Store {
         super(driver, homePage);
     }
 
-    //methods
 
+    //methods
+    public Smiths changeLocation(int zipCode){
+        //click the drop down
+        this.Click(changeStoreSelector);
+        driver.findElement(changeStoreSelector).click();
+        //clear the field
+        driver.findElement(changeStoreZipEntry).click();
+        driver.findElement(changeStoreZipEntry).clear();
+        //enter the new zip
+        driver.findElement(changeStoreZipEntry).sendKeys(String.valueOf(zipCode));
+        return this;
+    }
 
 }

@@ -6,12 +6,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.lang.*;
+import java.util.HashMap;
 
 public abstract class Store {
 
     //values
     String waitingLog = "Waiting for %s to be clickable on the %s page"; //element, toString
     String clickedLog = "Clicked %s on the %s page"; //element, toString
+    public WebDriver driver;
 
     //abstract values
     String homePage = "google.com";
@@ -23,14 +25,15 @@ public abstract class Store {
     //constructors
     public Store(WebDriver driver,String homePage) {
         this.homePage = homePage;
+        this.driver = driver;
         driver.get(homePage);
     }
 
     //methods
-    public void Click(WebDriver driver, By by, String item){
-        print(String.format(waitingLog,item,toString()),true);
+    public void Click(HashMap<By,String> selector){
+        print(String.format(waitingLog,selector[1],toString()),true);
         WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable(by));
+        wait.until(ExpectedConditions.elementToBeClickable((By) selector[0]));
         driver.findElement(by).click();
         print(String.format(clickedLog,item,toString()),true);
     }
