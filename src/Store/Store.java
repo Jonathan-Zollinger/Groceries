@@ -14,15 +14,16 @@ public abstract class Store {
     String clickedLog = "Clicked %s on the %s page"; //element, toString
 
     //abstract values
-    String homeURL = "google.com";
+    String homePage = "google.com";
 
     //selectors
 
     //selector methods
 
     //constructors
-    public Store(WebDriver driver) {
-        driver.get(homeURL);
+    public Store(WebDriver driver,String homePage) {
+        this.homePage = homePage;
+        driver.get(homePage);
     }
 
     //methods
@@ -33,16 +34,7 @@ public abstract class Store {
         driver.findElement(by).click();
         print(String.format(clickedLog,item,toString()),true);
     }
-    public void waitAndClick(WebDriver driver, By by, String action) {
-    //wait for the element to be clickable
-    new WebDriverWait(driver, 4)
-            .until(ExpectedConditions
-                    .elementToBeClickable(by));
-    //now click the element
-    driver.findElement(by).click();
-    System.out.printf("driver clicked the %s%n", action);
 
-    }//end public static void waitAndClick(WebDriver driver, By by, String action)
     private void print(String string, boolean isPrintLine){
         if (isPrintLine){
             System.out.println(string);
@@ -52,8 +44,12 @@ public abstract class Store {
     }//end print
 
     //abstract methods
-    String toString(){
+    public String toString(){
         return "Store";
     }
+
+//    public abstract void setHomePage(String homePage){
+//        this.homePage = homePage;
+//    }
 }//end store
 

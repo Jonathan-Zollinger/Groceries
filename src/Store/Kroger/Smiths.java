@@ -5,39 +5,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class Smiths extends Store {
+    //values
+    private static final String homePage = "https://www.smithsfoodanddrug.com/";
 
-    //fields
-    private static final String homeURL = "https://www.smithsfoodanddrug.com/";
+    //selector Strings
     private static final By changeStoreSelector =
             By.xpath("//div[@id='root']//button[@data-testid='CurrentModality-button']");
     private static final By changeStoreZipEntry =
             By.xpath("//div[@id='root']//input[@autocomplete='postal-code']");
     private static final By changeStoreSearchSelector =
             By.xpath("//div[@id='root']//div[@aria-label='How do you want to shop today?'");
+    //selector methods
 
-    @Override
-    public void setHomeURL(String homeURL) {
-        super.setHomeURL(homeURL);
-    }
-    public void setHomeURL() {
-        super.setHomeURL(homeURL);
-    }
 
     //constructors
-    public Smiths(){
-
+    public Smiths(WebDriver driver){
+        super(driver, homePage);
     }
 
     //methods
-    private Smiths ChangeLocation(WebDriver driver,String zipCode){
-        //click the drop down
-        driver.findElement(changeStoreSelector).click();
-        //clear the field
-        driver.findElement(changeStoreZipEntry).click();
-        driver.findElement(changeStoreZipEntry).clear();
-        //enter the new zip
-        driver.findElement(changeStoreZipEntry).sendKeys(zipCode);
-        return this;
-    }
+
 
 }
