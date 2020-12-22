@@ -5,9 +5,6 @@ import Store.Selector;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Smiths extends Store {
     //values
     private static final String homePage = "https://www.smithsfoodanddrug.com/";
@@ -21,7 +18,7 @@ public class Smiths extends Store {
             "Zip Code Entry Field", By.xpath("//input[@autocomplete='postal-code']"));
     Selector zipSearchButton = new Selector(
             "Zip Code Search Button", By.xpath(
-                    "//*[class='kds-Button kds-Button--primaryInverse kds-Button--compact kds-Button--hasIconOnly kds-SolitarySearch-button']));
+                    "//*[class='kds-Button kds-Button--primaryInverse kds-Button--compact kds-Button--hasIconOnly kds-SolitarySearch-button']"));
 
     //*[@id="root"]/div/div[3]/div[5]/div/div/form/div[1]/div[2]/label/div/button
 
@@ -39,16 +36,19 @@ public class Smiths extends Store {
 
 
     //methods
-//    public Smiths changeLocation(int zipCode){
-//        //click the drop down
-//        this.Click(changeStoreSelector);
-//        driver.findElement(changeStoreSelector).click();
-//        //clear the field
-//        driver.findElement(changeStoreZipEntry).click();
-//        driver.findElement(changeStoreZipEntry).clear();
-//        //enter the new zip
-//        driver.findElement(changeStoreZipEntry).sendKeys(String.valueOf(zipCode));
-//        return this;
-//    }
+    public Smiths changeLocation(int zipCode){
+        //click the drop down
+        this.click(changeStore);
+        //clear the field
+        this.click(storeZipEntry);
+        this.clearField(storeZipEntry);
+        //enter the new zip
+        this.sendKeys(storeZipEntry,String.valueOf(zipCode));
+        return this;
+    }
 
+    @Override
+    public String toString() {
+        return "Smiths";
+    }
 }

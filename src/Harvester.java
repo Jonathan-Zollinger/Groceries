@@ -1,6 +1,7 @@
 import Store.Kroger.Smiths;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -10,14 +11,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Harvester {
     private static String driverPath;
     private static String downloadFilepath;
+    private static WebDriver driver;
 
     public static void main(String[] args) {
         setDriverPath();
-        Smiths smiths = new Smiths(getDriver(driverPath, false));
-        smiths.changeLocation(84010);
-    }
+        System.setProperty("webdriver.chrome.driver","chromedriver-v87.0.4280.88-win32.exe");
+        driver = new ChromeDriver();
+        Smiths smiths = new Smiths(driver);
+        smiths.changeLocation(95758);
+    }//end main method
 
-    public static WebDriver getDriver(String driverPath,boolean isHeadless) {
+    public static WebDriver getDriver(String driverPath) {
 
         System.setProperty("webdriver.gecko.driver", driverPath);
         FirefoxProfile profile = new FirefoxProfile();
@@ -29,7 +33,7 @@ public class Harvester {
 
         //set Firefox options
         FirefoxOptions options = new FirefoxOptions();
-        options.setHeadless(false); //true == headless version of firefox
+//        options.setHeadless(false); //true == headless version of firefox
 
         //include profile in options
         options.setProfile(profile); //include all the profile settings in this option set
@@ -37,8 +41,7 @@ public class Harvester {
         //initiate new instance of firefox
         return new FirefoxDriver(options); //call the driver w/ our specified options (and profile).
 
-    }//end public static WebDriver getHeadlessDriverSpecifyDownloadDirectory(String downloadFilepath, String mimeType)
-
+    }//end getDriver method
 
     public static WebDriver getDownloadingDriver(String driverPath,boolean isHeadless,String downloadFilepath,
             String mimeType) {
@@ -68,8 +71,7 @@ public class Harvester {
         //initiate new instance of firefox
         return new FirefoxDriver(options); //call the driver w/ our specified options (and profile).
 
-    }//end getDownloadingDriver()
-
+    }//end getDownloadingDriver method
 
     private static void setDriverPath() {
         //assume that this is a linux machine, overwrite if it's a windows machine
@@ -78,7 +80,8 @@ public class Harvester {
             //if this is a windows machine, overwrite the linux designation
             driverPath = "geckodriver-v0.27.0-win64.exe";
         }
-    }//end setDriverPath()
+    }//end setDriverPath method
+
 }//end Harvester Class
 
 

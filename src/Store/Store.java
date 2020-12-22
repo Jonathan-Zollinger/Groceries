@@ -12,11 +12,16 @@ import java.util.List;
 
 public abstract class Store {
 
-    //values
-    String waitingLog = "Waiting for the %s to be clickable on the %s page"; //element, toString
-    String clickedLog = "Clicked the %s on the %s page"; //element, toString
+    //logs
+    String waitingLog       = "Waiting for the %s to be clickable on the %s page"; //element, toString
+    String clickedLog       = "Clicked the %s on the %s page"; //element, toString
+    String clearedFieldLog  = "Cleared the %s field on the %s page";//element, toString
+    String sentKeysLog      = "Sent keys '%s' to the %s field on the %s page"; //String sent, element, toString
+    //general variables
     public WebDriver driver;
     List<Selector> selectors;
+    WebDriverWait wait;
+
 
     //abstract values
     String homePage = "google.com";
@@ -31,33 +36,46 @@ public abstract class Store {
         this.driver = driver;
         driver.get(homePage);
         selectors = new ArrayList<Selector>();
+        wait = new WebDriverWait(driver, 10);
     }
 
     //methods
-    public void Click(Selector selector){
-        print(String.format(waitingLog,selector.getName(),toString()),true);
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable(By.id(selector.getName())));
+    public void click(Selector selector){
+        //log planned click
+        System.out.println(String.format(waitingLog,selector.getName(),toString()));
+        //wait for element to be clickable
+        wait.until(ExpectedConditions.elementToBeClickable(selector.getBy()));
+        //click the dang thing
         driver.findElement(selector.getBy()).click();
-        print(String.format(clickedLog,selector.getName(),toString()),true);
+        //log click
+        System.out.println(String.format(clickedLog,selector.getName(),toString()));
+    }//end click method
+
+    public void sendKeys(Selector selector,String stringToSend){
+        //log planned click
+        System.out.println(String.format(waitingLog,selector.getName(),toString()));
+        //wait for element to be clickable
+        wait.until(ExpectedConditions.elementToBeClickable(selector.getBy()));
+        //clear the field
+        driver.findElement(selector.getBy()).sendKeys(stringToSend);
+        //log click
+        System.out.println(String.format(sentKeysLog,stringToSend,selector.getName(),toString()));
     }
 
-    private void print(String string, boolean isPrintLine){
-        if (isPrintLine){
-            System.out.println(string);
-        }else {
-            System.out.print(string);
-        }
-    }//end print
+    public void clearField(Selector selector){
+        //log planned click
+        System.out.println(String.format(waitingLog,selector.getName(),toString()));
+        //wait for element to be clickable
+        wait.until(ExpectedConditions.elementToBeClickable(selector.getBy()));
+        //clear the field
+        driver.findElement(selector.getBy()).clear();
+        //log click
+        System.out.println(String.format(clearedFieldLog,selector.getName(),toString()));
+    }//end clearField method
+
 
     //abstract methods
-    public String toString(){
-        return "Store";
-    }
+    public abstract String toString();
 
-
-//    public abstract void setHomePage(String homePage){
-//        this.homePage = homePage;
-//    }
-}//end store
+}//end store class
 
