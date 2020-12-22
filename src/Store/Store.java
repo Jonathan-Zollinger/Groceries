@@ -6,14 +6,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.lang.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class Store {
 
     //values
-    String waitingLog = "Waiting for %s to be clickable on the %s page"; //element, toString
-    String clickedLog = "Clicked %s on the %s page"; //element, toString
+    String waitingLog = "Waiting for the %s to be clickable on the %s page"; //element, toString
+    String clickedLog = "Clicked the %s on the %s page"; //element, toString
     public WebDriver driver;
+    List<Selector> selectors;
 
     //abstract values
     String homePage = "google.com";
@@ -27,15 +30,16 @@ public abstract class Store {
         this.homePage = homePage;
         this.driver = driver;
         driver.get(homePage);
+        selectors = new ArrayList<Selector>();
     }
 
     //methods
-    public void Click(HashMap<By,String> selector){
-        print(String.format(waitingLog,selector[1],toString()),true);
+    public void Click(Selector selector){
+        print(String.format(waitingLog,selector.getName(),toString()),true);
         WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable((By) selector[0]));
-        driver.findElement(by).click();
-        print(String.format(clickedLog,item,toString()),true);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id(selector.getName())));
+        driver.findElement(selector.getBy()).click();
+        print(String.format(clickedLog,selector.getName(),toString()),true);
     }
 
     private void print(String string, boolean isPrintLine){
@@ -50,6 +54,7 @@ public abstract class Store {
     public String toString(){
         return "Store";
     }
+
 
 //    public abstract void setHomePage(String homePage){
 //        this.homePage = homePage;
