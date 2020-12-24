@@ -31,7 +31,7 @@ public class Smiths extends Store {
 
     //constructors
     public Smiths(WebDriver driver){
-        super(driver, homePage);
+        super(driver);
     }
 
 

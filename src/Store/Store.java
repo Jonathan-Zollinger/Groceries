@@ -9,6 +9,7 @@ import java.lang.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class Store {
 
@@ -19,8 +20,8 @@ public abstract class Store {
     String sentKeysLog      = "Sent keys '%s' to the %s field on the %s page"; //String sent, element, toString
     //general variables
     public WebDriver driver;
-    List<Selector> selectors;
     WebDriverWait wait;
+    Logger logger;
 
 
     //abstract values
@@ -31,11 +32,9 @@ public abstract class Store {
     //selector methods
 
     //constructors
-    public Store(WebDriver driver,String homePage) {
-        this.homePage = homePage;
+    public Store(WebDriver driver) {
         this.driver = driver;
-        driver.get(homePage);
-        selectors = new ArrayList<Selector>();
+//        driver.get(homePage);
         wait = new WebDriverWait(driver, 10);
     }
 

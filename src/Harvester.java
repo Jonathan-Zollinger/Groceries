@@ -1,4 +1,5 @@
 import Store.Kroger.Smiths;
+import Store.Rosie.Dicksmarket.DicksMarket;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,10 +16,8 @@ public class Harvester {
 
     public static void main(String[] args) {
         setDriverPath();
-        System.setProperty("webdriver.chrome.driver","chromedriver-v87.0.4280.88-win32.exe");
-        driver = new ChromeDriver();
-        Smiths smiths = new Smiths(driver);
-        smiths.changeLocation(95758);
+        driver = getDriver(driverPath);
+        DicksMarket dicksMarket = new DicksMarket(driver);
     }//end main method
 
     public static WebDriver getDriver(String driverPath) {
