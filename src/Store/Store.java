@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.logging.*;
+
 
 public abstract class Store {
 
@@ -21,8 +23,7 @@ public abstract class Store {
     //general variables
     public WebDriver driver;
     WebDriverWait wait;
-    Logger logger;
-
+    Logger log;
 
     //abstract values
     String homePage = "google.com";
@@ -34,8 +35,8 @@ public abstract class Store {
     //constructors
     public Store(WebDriver driver) {
         this.driver = driver;
-//        driver.get(homePage);
         wait = new WebDriverWait(driver, 10);
+        log = new Logger.getLogger()
     }
 
     //methods

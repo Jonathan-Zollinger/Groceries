@@ -9,12 +9,16 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.logging.Logger;
+
 public class Harvester {
     private static String driverPath;
     private static String downloadFilepath;
     private static WebDriver driver;
+    private static Logger logger;
 
     public static void main(String[] args) {
+        logger = new Logger.getLogger(Harvester.class.getName());
         setDriverPath();
         driver = getDriver(driverPath);
         DicksMarket dicksMarket = new DicksMarket(driver);

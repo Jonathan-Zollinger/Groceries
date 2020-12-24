@@ -4,8 +4,13 @@ import Store.Store;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import Store.Selector;
-
 import java.util.logging.Logger;
+
+    enum Departments{
+        Alcohol, Bakery, Beverage, Bulk, CaseLotSales, Cater, Dairy, Deli, EmergencyPreparedness,
+        Exclusives, Frozen, Fruit, GlutenFree, GourmetFoods, Grocery, HealthBeauty, HomeGoods, Meat, Organic,
+        Pasta, Pets, Seafood, Seasonal, Vegan, Vegetables
+    }
 
 public class Rosie extends Store {
 
