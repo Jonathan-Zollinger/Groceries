@@ -1,6 +1,7 @@
 package Store.Rosie.Dicksmarket;
 
 import Store.Rosie.Rosie;
+import Store.Rosie.RosieDepartments;
 import Store.Selector;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +14,7 @@ public class DicksMarket extends Rosie {
     //selectors
 
     //selector sub strings
-    String header = "//rosie-header";
+
 
     public DicksMarket(WebDriver driver) {
         super(driver);
@@ -23,6 +24,7 @@ public class DicksMarket extends Rosie {
 
     //methods
     public DicksMarket clickDepartmentsDropdown(){
+        
         return this;
     }
 }

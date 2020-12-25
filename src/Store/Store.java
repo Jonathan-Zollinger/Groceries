@@ -36,7 +36,7 @@ public abstract class Store {
     public Store(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, 10);
-        log = new Logger.getLogger()
+//        log = new Logger.getLogger()
     }
 
     //methods

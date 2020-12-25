@@ -1,5 +1,6 @@
 import Store.Kroger.Smiths;
 import Store.Rosie.Dicksmarket.DicksMarket;
+import Store.Rosie.Rosie;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,10 +19,11 @@ public class Harvester {
     private static Logger logger;
 
     public static void main(String[] args) {
-        logger = new Logger.getLogger(Harvester.class.getName());
+//        logger = new Logger.getLogger(Harvester.class.getName());
         setDriverPath();
         driver = getDriver(driverPath);
-        DicksMarket dicksMarket = new DicksMarket(driver);
+
+
     }//end main method
 
     public static WebDriver getDriver(String driverPath) {
