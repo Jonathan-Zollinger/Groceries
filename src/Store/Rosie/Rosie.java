@@ -10,6 +10,12 @@ import java.util.logging.Logger;
 
 public class Rosie extends Store implements RosieDepartments{
 
+    //constructors
+    public Rosie(WebDriver driver) {
+        super(driver);
+    }
+
+    //values
     Logger logger = Logger.getLogger(Rosie.class.getName());
     private static final String homePage = "http://rosieapp.com/shopstore/dicksmarketcenterville";
 
@@ -25,19 +31,23 @@ public class Rosie extends Store implements RosieDepartments{
             By.xpath(String.format("%s//*[text() = 'Shop departments']",header)));
 
     //selector methods
-    protected Selector getDepartmentSelector(RosieDepartments department){
+    private Selector getDepartmentSelector(RosieDepartments.Departments department){
         return new Selector("Department from 'Shop departments' dropdown",
                 By.xpath(String.format("%s//*[text()='%s']",header,department)));
     }
 
-    public Rosie(WebDriver driver) {
-        super(driver);
-    }
-
     //methods
-    private void clickDepartmentFromDropdown(RosieDepartments department){
+    public void clickWelcomeOK(){
+        click(welcomeOK);
+    }
+    public void clickDepartmentsDropdown(){
+        click(shopDepartmentsDropdown);
+    }
+    public void clickDepartmentFromDropdown(RosieDepartments.Departments department){
         click(getDepartmentSelector(department));
     }
+
+
     @Override
     public String toString() {
         return "Rosie";

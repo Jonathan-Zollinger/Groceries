@@ -1,6 +1,7 @@
 import Store.Kroger.Smiths;
 import Store.Rosie.Dicksmarket.DicksMarket;
 import Store.Rosie.Rosie;
+import Store.Rosie.RosieDepartments;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.logging.Logger;
 
-public class Harvester {
+public class Harvester /*implements RosieDepartments */{
     private static String driverPath;
     private static String downloadFilepath;
     private static WebDriver driver;
@@ -22,6 +23,11 @@ public class Harvester {
 //        logger = new Logger.getLogger(Harvester.class.getName());
         setDriverPath();
         driver = getDriver(driverPath);
+//        Rosie dickMarket = new Rosie(driver);
+        DicksMarket dicksMarket = new DicksMarket(driver);
+        dicksMarket.clickWelcomeOK();
+        dicksMarket.clickDepartmentsDropdown();
+        dicksMarket.clickDepartmentFromDropdown(RosieDepartments.Departments.GlutenFree);
 
 
     }//end main method
