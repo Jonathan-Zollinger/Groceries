@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/selenium_learning.iml" filepath="$PROJECT_DIR$/selenium_learning.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Groceries.iml" filepath="$PROJECT_DIR$/Groceries.iml" />
     </modules>
   </component>
 </project>

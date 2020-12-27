@@ -1,15 +1,9 @@
-import Store.Kroger.Smiths;
 import Store.Rosie.Dicksmarket.DicksMarket;
-import Store.Rosie.Rosie;
 import Store.Rosie.RosieDepartments;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.logging.Logger;
 
@@ -20,14 +14,13 @@ public class Harvester /*implements RosieDepartments */{
     private static Logger logger;
 
     public static void main(String[] args) {
-//        logger = new Logger.getLogger(Harvester.class.getName());
+
         setDriverPath();
         driver = getDriver(driverPath);
-//        Rosie dickMarket = new Rosie(driver);
         DicksMarket dicksMarket = new DicksMarket(driver);
-        dicksMarket.clickWelcomeOK();
-        dicksMarket.clickDepartmentsDropdown();
-        dicksMarket.clickDepartmentFromDropdown(RosieDepartments.Departments.GlutenFree);
+        dicksMarket.clickWelcomeOK()
+            .clickDepartmentsDropdown()
+            .clickGFDeptFromDropdown();//returns RosieGF object
 
 
     }//end main method
@@ -62,7 +55,7 @@ public class Harvester /*implements RosieDepartments */{
 
         //set Firefox profile preferences
         /* it seems like you could get away without changing the browser.download.folderList preference to "2",
-        butwithout it we can't change the browser.download.dir preference. */
+        but without it we can't change the browser.download.dir preference. */
         profile.setPreference("browser.download.folderList", 2);//uses last download directory as destination
         profile.setPreference("browser.download.dir",downloadFilepath); //if path = invalid, goes to dwnlds folder
 

@@ -23,8 +23,9 @@ public class DicksMarket extends Rosie {
 
 
     //methods
-    public DicksMarket clickDepartmentsDropdown(){
-        
-        return this;
+
+    @Override
+    public String toString() {
+        return "Dick's Market Home";
     }
 }

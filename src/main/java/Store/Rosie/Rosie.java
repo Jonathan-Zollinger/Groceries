@@ -8,11 +8,14 @@ import java.util.logging.Logger;
 
 
 
-public class Rosie extends Store implements RosieDepartments{
+public class Rosie extends Store{
+
+    WebDriver driver;
 
     //constructors
     public Rosie(WebDriver driver) {
         super(driver);
+        this.driver = driver;
     }
 
     //values
@@ -31,26 +34,29 @@ public class Rosie extends Store implements RosieDepartments{
             By.xpath(String.format("%s//*[text() = 'Shop departments']",header)));
 
     //selector methods
-    private Selector getDepartmentSelector(RosieDepartments.Departments department){
-        return new Selector("Department from 'Shop departments' dropdown",
+    private Selector getDepartmentSelector(RosieDepartments department){
+        return new Selector(String.format("%s Department from 'Shop departments' dropdown",department),
                 By.xpath(String.format("%s//*[text()='%s']",header,department)));
     }
 
     //methods
-    public void clickWelcomeOK(){
+    public Rosie clickWelcomeOK(){
         click(welcomeOK);
+        return this;
     }
-    public void clickDepartmentsDropdown(){
+    public Rosie clickDepartmentsDropdown(){
         click(shopDepartmentsDropdown);
+        return this;
     }
-    public void clickDepartmentFromDropdown(RosieDepartments.Departments department){
-        click(getDepartmentSelector(department));
+    public RosieGF clickGFDeptFromDropdown(){
+        click(getDepartmentSelector(RosieDepartments.GlutenFree));
+        return new RosieGF(driver);
     }
 
 
     @Override
     public String toString() {
-        return "Rosie";
+        return String.valueOf(this.getClass());
     }
 
 
